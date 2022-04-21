@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "5131880480",
+    "project_id": "final-project-25406",
+    "storage_bucket": "final-project-25406.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:5131880480:android:5f60ddfac43363908dd445",
+        "android_client_info": {
+          "package_name": "edu.uga.cs.mobile_dev_final_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "5131880480-6vgmtlgbpafmi5m3d3e7fblvh8b1r8ev.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPrW8k4XqhXlFcM74oZHavtycVHMopOt0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "5131880480-6vgmtlgbpafmi5m3d3e7fblvh8b1r8ev.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

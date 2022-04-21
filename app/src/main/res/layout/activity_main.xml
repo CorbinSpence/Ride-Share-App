@@ -14,60 +14,68 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:scaleType="centerInside"
-        app:layout_constraintBottom_toTopOf="@+id/tv_username"
+        app:layout_constraintBottom_toTopOf="@+id/username_prompt"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintVertical_chainStyle="packed"
-        app:srcCompat="@drawable/ridesharingapp" />
+        app:srcCompat="@drawable/ridesharingapp"
+        tools:layout_editor_absoluteX="0dp" />
 
     <TextView
-        android:id="@+id/tv_username"
+        android:id="@+id/username_prompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/username_text"
-        app:layout_constraintBottom_toTopOf="@+id/et_username"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-    <EditText
-        android:id="@+id/et_username"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/tv_password"
-        app:layout_constraintTop_toBottomOf="@+id/tv_username" />
+        app:layout_constraintBottom_toTopOf="@+id/username_input"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        tools:layout_editor_absoluteX="0dp" />
 
     <TextView
-        android:id="@+id/tv_password"
+        android:id="@+id/password_prompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/password_text"
-        app:layout_constraintBottom_toTopOf="@+id/et_password"
-        app:layout_constraintTop_toBottomOf="@+id/et_username" />
+        app:layout_constraintBottom_toTopOf="@+id/password_input"
+        app:layout_constraintTop_toBottomOf="@+id/username_input"
+        tools:layout_editor_absoluteX="0dp" />
 
     <EditText
-        android:id="@+id/et_password"
+        android:id="@+id/password_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/btn_signin"
-        app:layout_constraintTop_toBottomOf="@+id/tv_password" />
+        app:layout_constraintBottom_toTopOf="@+id/button_sign_in"
+        app:layout_constraintTop_toBottomOf="@+id/password_prompt"
+        tools:layout_editor_absoluteX="0dp" />
 
     <Button
-        android:id="@+id/btn_signin"
-        android:layout_width="match_parent"
+        android:id="@+id/button_sign_in"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@android:color/holo_orange_dark"
         android:text="SIGN IN"
         android:textColor="@android:color/white"
-        app:layout_constraintBottom_toTopOf="@+id/btn_register"
-        app:layout_constraintTop_toBottomOf="@+id/et_password" />
+        app:layout_constraintBottom_toTopOf="@+id/register_user_link"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/password_input" />
 
-    <Button
-        android:id="@+id/btn_register"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/register_user_link"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@android:color/holo_orange_dark"
-        android:text="REGISTER"
-        android:textColor="@android:color/white"
+        android:text="Register"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_signin" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_sign_in" />
+
+    <EditText
+        android:id="@+id/username_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/password_prompt"
+        app:layout_constraintTop_toBottomOf="@+id/username_prompt"
+        tools:layout_editor_absoluteX="0dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

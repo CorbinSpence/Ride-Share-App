@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">Mobile_Dev_Final_Project</string>
-    <string name="username_text">username</string>
-    <string name="password_text">password</string>
+    <string name="username_text">Username</string>
+    <string name="password_text">Password</string>
+
+    <string name="email_text">Email</string>
+    <string name="password_text2">Password</string>
+    <string name="full_name">Full Name</string>
 </resources>

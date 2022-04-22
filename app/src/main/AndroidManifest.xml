@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mobile_Dev_Final_Project">
         <activity
-            android:name=".PlaceHolderActivity"
+            android:name=".UserProfileActivity"
             android:exported="false" />
         <activity
             android:name=".RegisterActivity"

@@ -104,7 +104,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()) {
+                                finish();
                                 Toast.makeText(RegisterActivity.this, "User registered!", Toast.LENGTH_LONG).show();
+                                startActivity(new Intent(RegisterActivity.this, UserProfileActivity.class));
                                 // go back to login layout
                             } else {
                                 Toast.makeText(RegisterActivity.this, "Register Failed! Try Again!", Toast.LENGTH_LONG).show();

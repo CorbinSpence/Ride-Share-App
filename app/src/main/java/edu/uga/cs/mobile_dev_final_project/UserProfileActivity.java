@@ -5,12 +5,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -24,13 +29,16 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
 
     private TextView displayFullName, displayEmail, displayTravelPoints;
     // private TextView tv_fullName, tv_email, tv_password;
-    private EditText et_changeName, et_changeEmail, et_changePassword;
-    private Button btn_update;
+    private EditText et_changeName, et_changeEmail, et_changePassword, et_currentPassword;
+    private Button btn_update, btn_logout;
 
     private FirebaseAuth mAuth;
     private DatabaseReference dbRef;
     private String uid;
     private User user;
+
+    private String email;
+    private String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,14 +56,17 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         et_changeName = findViewById(R.id.profile_fullName_form);
         et_changeEmail = findViewById(R.id.profile_email_form);
         et_changePassword = findViewById(R.id.profile_password_form);
+        //et_currentPassword = findViewById(R.id.profile_password_form2);
 
         btn_update = findViewById(R.id.button_update_user);
+        btn_logout = findViewById(R.id.button_logout);
 
         if( !uid.isEmpty() ) {
             loadUserInformation();
         }
 
         btn_update.setOnClickListener( this );
+        btn_logout.setOnClickListener( this );
 
 
     }
@@ -65,6 +76,9 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         switch ( v.getId() ) {
             case R.id.button_update_user:
                 updateUserProfile();
+                break;
+            case R.id.button_logout:
+                logoutUser();
                 break;
         }
     }
@@ -98,13 +112,81 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void updateUserProfile() {
-        String fullName = et_changeName.getText().toString().trim();
-        String email = et_changeEmail.getText().toString().trim();
-        String password = et_changePassword.getText().toString().trim();
+        FirebaseUser fbUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        /*if( !_NAME.equals(fullName) ) {
-            dbRef.child().child("fullName").setValue(fullName);
+        String fullName = et_changeName.getText().toString().trim();
+        email = et_changeEmail.getText().toString().trim();
+        password = et_changePassword.getText().toString().trim();
+        // String currentPassword = et_currentPassword.getText().toString().trim();
+
+        if( fullName.isEmpty() ) {
+            fullName = user.getFullName();
+        }
+
+        if( email.isEmpty() ) {
+            email = user.getEmail();
+        }
+
+        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            et_changeEmail.setError("Please use a valid email!");
+            et_changeEmail.requestFocus();
+            return;
+        }
+
+        /*if(password.length() < 8 || password.length() > 16) {
+            et_changePassword.setError("Password must be 8 to 16 digits long!");
+            et_changePassword.requestFocus();
+            return;
+        } *//*else {
+            if( !password.isEmpty() ) {
+                updatePassword(FirebaseAuth.getInstance().getCurrentUser(), password);
+            }
         }*/
+
+        /*AuthCredential cred = EmailAuthProvider.getCredential("", "");
+        fbUser.reauthenticate(cred).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                FirebaseUser fbUser = FirebaseAuth.getInstance().getCurrentUser();
+                fbUser.updateEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(UserProfileActivity.this, "Email updated!", Toast.LENGTH_LONG).show();
+                    }
+                });
+                if(!password.isEmpty()) {
+                    fbUser.updatePassword(password).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Toast.makeText(UserProfileActivity.this, "Password updated!", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            }
+        });*/
+
+        User user1 = new User(email, fullName, user.getTravelPoints());
+
+        dbRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .setValue(user1).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()) {
+                    // finish();
+                    Toast.makeText(UserProfileActivity.this, "User updated!", Toast.LENGTH_LONG).show();
+                    // startActivity(new Intent(UserProfileActivity.this, UserProfileActivity.class));
+                    // go back to login layout
+                } else {
+                    Toast.makeText(UserProfileActivity.this, "Update Failed! Try Again!", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    private void logoutUser() {
+        finish();
+        mAuth.signOut();
+        startActivity(new Intent(UserProfileActivity.this, MainActivity.class));
     }
 
 }

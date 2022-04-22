@@ -9,15 +9,6 @@
 
 
     <TextView
-        android:id="@+id/email_display"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/email_text"
-        app:layout_constraintBottom_toTopOf="@+id/profile_fullName"
-        app:layout_constraintStart_toStartOf="@+id/fullName_display"
-        app:layout_constraintTop_toBottomOf="@+id/fullName_display" />
-
-    <TextView
         android:id="@+id/travelPoints_display"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,13 +28,32 @@
         app:layout_constraintTop_toBottomOf="@+id/travelPoints_display" />
 
     <TextView
+        android:id="@+id/email_display"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/email_text"
+        app:layout_constraintBottom_toTopOf="@+id/profile_fullName"
+        app:layout_constraintStart_toStartOf="@+id/fullName_display"
+        app:layout_constraintTop_toBottomOf="@+id/fullName_display" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/edit_profile"
+        app:layout_constraintBottom_toTopOf="@+id/profile_fullName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
         android:id="@+id/profile_fullName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/full_name"
         app:layout_constraintBottom_toTopOf="@+id/profile_fullName_form"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <EditText
         android:id="@+id/profile_fullName_form"
@@ -71,7 +81,7 @@
         android:id="@+id/profile_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/password_text"
+        android:text="@string/new_password"
         app:layout_constraintBottom_toTopOf="@+id/profile_password_form"
         app:layout_constraintTop_toBottomOf="@+id/profile_email_form" />
 
@@ -84,12 +94,30 @@
 
     <Button
         android:id="@+id/button_update_user"
-        android:layout_width="wrap_content"
+        android:layout_width="206dp"
         android:layout_height="wrap_content"
+        android:layout_weight="0.5"
         android:backgroundTint="@android:color/holo_orange_dark"
         android:text="UPDATE PROFILE"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button_logout"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_password_form" />
+
+    <Button
+        android:id="@+id/button_logout"
+        android:layout_width="205dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:backgroundTint="@android:color/holo_orange_dark"
+        android:text="LOGOUT"
+        app:layout_constraintBottom_toBottomOf="@+id/button_update_user"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/button_update_user"
+        app:layout_constraintTop_toTopOf="@+id/button_update_user" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

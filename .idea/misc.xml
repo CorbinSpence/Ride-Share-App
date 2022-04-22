@@ -3,8 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Android_Studio/Projects/Mobile_Dev_Final_Project/app/src/main/res/layout/activity_main.xml" value="0.33" />
-        <entry key="..\:/Android_Studio/Projects/Mobile_Dev_Final_Project/app/src/main/res/layout/activity_register.xml" value="0.33" />
+        <entry key="..\:/corbi/Mobile_Dev_Final_Project/app/src/main/res/layout/activity_home_page.xml" value="0.358695652173913" />
+        <entry key="..\:/corbi/Mobile_Dev_Final_Project/app/src/main/res/layout/activity_main.xml" value="0.358695652173913" />
+        <entry key="..\:/corbi/Mobile_Dev_Final_Project/app/src/main/res/layout/recycle_view_driver_option.xml" value="0.33" />
       </map>
     </option>
   </component>

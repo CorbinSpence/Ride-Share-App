@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         register = findViewById(R.id.register_user_link);
 
         register.setOnClickListener(this);
-        // signIn.setOnClickListener(this);
+        signIn.setOnClickListener(this);
 
     }
 
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(this, RegisterActivity.class));
                 break;
             case R.id.button_sign_in:
-                /*startActivity(new Intent(this, RegisterActivity.class));*/
+                startActivity(new Intent(this, Home_Page.class));
                 break;
         }
     }

@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mobile_Dev_Final_Project">
         <activity
+            android:name=".RiderOptionsPage"
+            android:exported="false" />
+        <activity
+            android:name=".DriverOptionsPage"
+            android:exported="false" />
+        <activity
             android:name=".Home_Page"
             android:exported="false" />
         <activity

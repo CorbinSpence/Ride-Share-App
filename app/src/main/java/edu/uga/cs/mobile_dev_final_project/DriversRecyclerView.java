@@ -30,8 +30,8 @@ public class DriversRecyclerView extends RecyclerView.Adapter<DriversRecyclerVie
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater I = LayoutInflater.from(context);
-        View view = I.inflate(R.layout.recycle_view_driver_option, parent, false);
+        LayoutInflater i = LayoutInflater.from(context);
+        View view = i.inflate(R.layout.recycle_view_driver_option, parent, false);
         return new MyViewHolder(view);
     }
 

@@ -7,34 +7,35 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageView;
 
-public class Home_Page extends AppCompatActivity implements View.OnClickListener {
+public class Home_Page extends AppCompatActivity implements View.OnClickListener{
     private RecyclerView rView;
-    private Button btn_profile;
-
+    private ImageView car, seat;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
 
-        btn_profile = findViewById(R.id.profile_button);
-
         rView = findViewById(R.id.driverView);
+        car = findViewById(R.id.selectDriver);
+        seat = findViewById(R.id.selectRider);
         DriversRecyclerView drv = new DriversRecyclerView(this);
         rView.setAdapter(drv);
         rView.setLayoutManager(new LinearLayoutManager(this));
-
-        btn_profile.setOnClickListener(this);
+        car.setOnClickListener(this);
+        seat.setOnClickListener(this);
     }
 
     @Override
-    public void onClick(View v) {
-        switch ( v.getId() ) {
-            case R.id.profile_button:
-                startActivity(new Intent(this, UserProfileActivity.class));
+    public void onClick(View view) {
+        switch(view.getId()){
+            case R.id.selectDriver:
+                startActivity(new Intent(this, DriverOptionsPage.class));
+                break;
+            case R.id.selectRider:
+                startActivity(new Intent(this, RiderOptionsPage.class));
                 break;
         }
     }
-
 }

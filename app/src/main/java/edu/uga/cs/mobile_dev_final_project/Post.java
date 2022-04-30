@@ -51,4 +51,8 @@ public class Post {
         return acceptor_name;
     }
 
+    public String getGender(){
+        return "Male";
+    }
+
 }

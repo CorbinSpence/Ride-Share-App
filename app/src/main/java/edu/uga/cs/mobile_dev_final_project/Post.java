@@ -9,6 +9,7 @@ public class Post {
     private String destination_address;
     private String poster_name;
     private String acceptor_name;
+    private String gender;
 
     public Post() {}
 
@@ -21,6 +22,7 @@ public class Post {
         this.destination_address = destination_address;
         this.poster_name = poster_name;
         this.acceptor_name = acceptor_name;
+        this.gender = "Male";
     }
 
     public int getPost_type() {
@@ -52,7 +54,10 @@ public class Post {
     }
 
     public String getGender(){
-        return "Male";
+        return gender;
     }
 
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 }

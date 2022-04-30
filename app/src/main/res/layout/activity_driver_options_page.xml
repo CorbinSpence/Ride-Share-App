@@ -1,10 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DriverOptionsPage">
+    tools:context=".DriverOptionsPage"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5"
+        tools:context=".DriverOptionsPage" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:orientation="vertical"
+            tools:context=".DriverOptionsPage">
+
+            <TextView
+                android:id="@+id/pickup_street_prompt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/street_address"
+                app:layout_constraintBottom_toTopOf="@+id/pickup_street_input"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <EditText
+                android:id="@+id/pickup_street_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/pickup_state_prompt"
+                app:layout_constraintTop_toBottomOf="@+id/pickup_street_prompt"
+                tools:layout_editor_absoluteX="0dp" />
+
+            <TextView
+                android:id="@+id/pickup_city_prompt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/city"
+                app:layout_constraintBottom_toTopOf="@+id/pickup_street_input"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <EditText
+                android:id="@+id/pickup_city_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/pickup_state_prompt"
+                app:layout_constraintTop_toBottomOf="@+id/pickup_street_prompt"
+                tools:layout_editor_absoluteX="0dp" />
+
+            <TextView
+                android:id="@+id/pickup_state_prompt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/state"
+                app:layout_constraintBottom_toTopOf="@+id/pickup_state_input"
+                app:layout_constraintTop_toBottomOf="@+id/pickup_street_input"
+                tools:layout_editor_absoluteX="0dp" />
+
+            <EditText
+                android:id="@+id/pickup_state_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/pickup_zip_prompt"
+                app:layout_constraintTop_toBottomOf="@+id/pickup_state_prompt"
+                tools:layout_editor_absoluteX="0dp" />
+
+            <TextView
+                android:id="@+id/pickup_zip_prompt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/zip"
+                app:layout_constraintBottom_toTopOf="@+id/pickup_zip_input"
+                app:layout_constraintTop_toBottomOf="@+id/pickup_state_input"
+                tools:layout_editor_absoluteX="0dp" />
+
+            <EditText
+                android:id="@+id/pickup_zip_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/destination_street_input"
+                app:layout_constraintTop_toBottomOf="@+id/pickup_zip_prompt"
+                tools:layout_editor_absoluteX="0dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:orientation="vertical"
+            tools:context=".DriverOptionsPage">
+
+            <TextView
+                android:id="@+id/destination_street_prompt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/street_address"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="125dp" />
+
+            <EditText
+                android:id="@+id/destination_street_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="196dp" />
+
+            <TextView
+                android:id="@+id/destination_city_prompt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/city"
+                app:layout_constraintBottom_toTopOf="@+id/pickup_street_input"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <EditText
+                android:id="@+id/destination_city_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/pickup_state_prompt"
+                app:layout_constraintTop_toBottomOf="@+id/pickup_street_prompt"
+                tools:layout_editor_absoluteX="0dp" />
+
+            <TextView
+                android:id="@+id/destination_state_prompt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/state"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="125dp" />
+
+            <EditText
+                android:id="@+id/destination_state_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="196dp" />
+
+            <TextView
+                android:id="@+id/destination_zip_prompt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/zip"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="177dp" />
+
+            <EditText
+                android:id="@+id/destination_zip_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="233dp" />
+        </LinearLayout>
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/button3"
@@ -28,8 +183,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/driver_page_rv"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

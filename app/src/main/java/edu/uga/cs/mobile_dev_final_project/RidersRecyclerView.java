@@ -19,8 +19,10 @@ public class RidersRecyclerView  extends RecyclerView.Adapter<RidersRecyclerView
     private String[] riderNames;
     private String[] riderGenders;
     private final String TAG = "RiderRecyclerView";
+    private MyClickListener mMyClickListener;
 
-    public RidersRecyclerView (Context context, @NonNull ArrayList<Post> postList){
+    public RidersRecyclerView (Context context, @NonNull ArrayList<Post> postList, MyClickListener myClickListener){
+        mMyClickListener = myClickListener;
         ArrayList<String> nameList = new ArrayList<String>();
         ArrayList<String> genderList = new ArrayList<String>();
         for(Post post: postList){
@@ -48,6 +50,18 @@ public class RidersRecyclerView  extends RecyclerView.Adapter<RidersRecyclerView
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater i = LayoutInflater.from(context);
         View v = i.inflate(R.layout.recycle_view_rider_option, parent,false);
+
+        MyViewHolder vh = new MyViewHolder( v ); // don't pass in null this is just for demonstration
+        int position = vh.getAdapterPosition();
+        vh.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // get the position of this Vh
+                if (mMyClickListener != null) mMyClickListener.onItemClick(position);
+            }
+        });
+
+
         return new MyViewHolder(v);
     }
 
@@ -70,4 +84,9 @@ public class RidersRecyclerView  extends RecyclerView.Adapter<RidersRecyclerView
             gender = itemView.findViewById(R.id.riderGender);
         }
     }
+
+    public interface MyClickListener {
+        void onItemClick(int position);
+    }
+
 }

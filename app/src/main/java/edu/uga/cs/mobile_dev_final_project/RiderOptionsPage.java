@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,37 +34,64 @@ public class RiderOptionsPage extends AppCompatActivity implements View.OnClickL
     Button request, cancel;
     FirebaseDatabase fd = FirebaseDatabase.getInstance();
     private final String TAG = "RiderOptionPage";
+    ArrayList<Post> list;
+    DatabaseReference dbr = fd.getReference("RequestData");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rider_options_page);
 
-        ArrayList<Post> list = setListData();
+        list = new ArrayList<>();
+        setListData();
 
         rv = findViewById(R.id.rider_page_rv);
         request = findViewById(R.id.rideRequest);
         cancel = findViewById(R.id.rideCancel);
 
-        RidersRecyclerView rrv = new RidersRecyclerView(this, list);
+        request.setOnClickListener(this);
+        cancel.setOnClickListener(this);
+
+
+
+        // show();
+    }
+
+    private void show() {
+        //RidersRecyclerView rrv = new RidersRecyclerView(this, list);
+
+        final RidersRecyclerView.MyClickListener mcl = new RidersRecyclerView.MyClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                if(position == 1) {
+                    startActivity(new Intent(RiderOptionsPage.this, Home_Page.class));
+                } else if(position == 2) {
+                    startActivity(new Intent(RiderOptionsPage.this, DriverOptionsPage.class));
+                }
+
+            }
+        };
+        RidersRecyclerView rrv = new RidersRecyclerView(this, list, mcl);
+
         rv.setAdapter(rrv);
         rv.setLayoutManager(new LinearLayoutManager(this));
 
-        request.setOnClickListener(this);
-        cancel.setOnClickListener(this);
+        //rv.setOnClickListener( this );
     }
 
-    private ArrayList<Post> setListData(){
-        DatabaseReference dbr = fd.getReference("RequestData");
-        ArrayList<Post> al = new ArrayList<Post>();
+    private void setListData(){
+
+        //ArrayList<Post> al = new ArrayList<Post>();
         dbr.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                al.clear();
+                list.clear();
                 for (DataSnapshot dSnapshot : snapshot.getChildren()){
+
                     Log.d(TAG, "Value added: "+dSnapshot.getValue(Post.class).toString());
                     Log.d(TAG, "name of person: "+dSnapshot.getValue(Post.class).getPoster_name());
-                    al.add(dSnapshot.getValue(Post.class));
+                    list.add(dSnapshot.getValue(Post.class));
+                    show();
                 }
                 Log.d(TAG, "End of for loop.");
             }
@@ -73,7 +101,7 @@ public class RiderOptionsPage extends AppCompatActivity implements View.OnClickL
 
             }
         });
-        return al;
+        // return al;
     }
 
     //does the function for the request ride button
@@ -111,4 +139,6 @@ public class RiderOptionsPage extends AppCompatActivity implements View.OnClickL
                 cancelRide();
         }
     }
+
+
 }

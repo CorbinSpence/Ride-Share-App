@@ -11,4 +11,10 @@
     <string name="new_password">New Password</string>
     <string name="current_password">Current Password</string>
 
+
+    <string name="street_address">Street Address</string>
+    <string name="state">State</string>
+    <string name="city">City</string>
+    <string name="zip">ZIP</string>
+
 </resources>

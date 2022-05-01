@@ -30,7 +30,6 @@ public class Home_Page extends AppCompatActivity implements View.OnClickListener
     private ArrayList<Post> list;
     private final String TAG = "HomePage";
     private FirebaseDatabase fd = FirebaseDatabase.getInstance();
-    private DatabaseReference dbr = fd.getReference("RequestData");
     private Spinner spin;
 
     @Override
@@ -49,7 +48,7 @@ public class Home_Page extends AppCompatActivity implements View.OnClickListener
         spin.setOnItemSelectedListener(new MySpinner());
 
         list = new ArrayList<Post>();
-        setListData();
+
 
         DriversRecyclerView drv = new DriversRecyclerView(this);
         rView.setAdapter(drv);
@@ -73,9 +72,10 @@ public class Home_Page extends AppCompatActivity implements View.OnClickListener
                 break;
         }
     }
-    private void setListData(){
+    private void setListData(String path){
 
         //ArrayList<Post> al = new ArrayList<Post>();
+        DatabaseReference dbr = fd.getReference(path);
         dbr.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -122,6 +122,11 @@ public class Home_Page extends AppCompatActivity implements View.OnClickListener
 
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            if(adapterView.getItemAtPosition(i).equals("Rider")){
+                setListData("RequestData");
+            }else if(adapterView.getItemAtPosition(i).equals("Driver")){
+                setListData("Posts");
+            }
 
         }
 

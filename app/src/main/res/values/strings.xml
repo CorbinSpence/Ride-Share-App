@@ -17,4 +17,8 @@
     <string name="city">City</string>
     <string name="zip">ZIP</string>
 
+    <string-array name="spinner">
+        <item>Rider</item>
+        <item>Driver</item>
+    </string-array>
 </resources>

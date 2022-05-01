@@ -165,6 +165,7 @@
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:layout_marginBottom="36dp"
         android:text="Multi-purpose button"
         app:layout_constraintBottom_toTopOf="@+id/textView2"

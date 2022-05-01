@@ -74,32 +74,6 @@ public class Home_Page extends AppCompatActivity implements View.OnClickListener
     }
     private void setListData(String path){
 
-        //ArrayList<Post> al = new ArrayList<Post>();
-        DatabaseReference dbr = fd.getReference(path);
-        dbr.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                list.clear();
-                for (DataSnapshot dSnapshot : snapshot.getChildren()){
-
-                    Log.d(TAG, "Value added: "+dSnapshot.getValue(Post.class).toString());
-                    Log.d(TAG, "name of person: "+dSnapshot.getValue(Post.class).getPoster_name());
-                    list.add(dSnapshot.getValue(Post.class));
-                    show();
-                }
-                Log.d(TAG, "End of for loop.");
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-        // return al;
-    }
-    private void show() {
-        //RidersRecyclerView rrv = new RidersRecyclerView(this, list);
-
         final RidersRecyclerView.MyClickListener mcl = new RidersRecyclerView.MyClickListener() {
             @Override
             public void onItemClick(int position) {
@@ -111,13 +85,34 @@ public class Home_Page extends AppCompatActivity implements View.OnClickListener
 
             }
         };
-        RidersRecyclerView rrv = new RidersRecyclerView(this, list, mcl);
 
-        rView.setAdapter(rrv);
-        rView.setLayoutManager(new LinearLayoutManager(this));
+        //ArrayList<Post> al = new ArrayList<Post>();
+        DatabaseReference dbr = fd.getReference(path);
+        dbr.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                list.clear();
 
-        //rv.setOnClickListener( this );
+                for (DataSnapshot dSnapshot : snapshot.getChildren()){
+                    Log.d(TAG, "Value added: "+dSnapshot.getValue(Post.class).toString());
+                    Log.d(TAG, "name of person: "+dSnapshot.getValue(Post.class).getPoster_name());
+                    list.add(dSnapshot.getValue(Post.class));
+                }
+
+                RidersRecyclerView rrv = new RidersRecyclerView(Home_Page.this, list, mcl);
+                rView.setAdapter(rrv);
+                rView.setLayoutManager(new LinearLayoutManager(Home_Page.this));
+                Log.d(TAG, "End of for loop.");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
+
     private class MySpinner implements AdapterView.OnItemSelectedListener {
 
         @Override
@@ -136,3 +131,6 @@ public class Home_Page extends AppCompatActivity implements View.OnClickListener
         }
     }
 }
+
+
+

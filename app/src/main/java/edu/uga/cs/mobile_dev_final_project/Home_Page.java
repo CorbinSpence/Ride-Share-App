@@ -2,6 +2,7 @@ package edu.uga.cs.mobile_dev_final_project;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,7 +15,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,33 +26,55 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Home_Page extends AppCompatActivity implements View.OnClickListener{
     private RecyclerView rView;
     private ImageView car, seat;
     private Button profile;
-    private ArrayList<Post> list;
+    private ArrayList<OfferData> list;
     private final String TAG = "HomePage";
     private FirebaseDatabase fd = FirebaseDatabase.getInstance();
     private Spinner spin;
+    private FirebaseAuth mAuth;
+    private String uid;
+    private User user2;
+    private PendingPost pp;
+
+    private TextView tv;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if(mAuth.getCurrentUser() == null) {
+            finish();
+            startActivity(new Intent(this, MainActivity.class));
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
 
+        mAuth = FirebaseAuth.getInstance();
+        uid = mAuth.getCurrentUser().getUid().toString();
+
         rView = findViewById(R.id.driverView);
         car = findViewById(R.id.selectDriver);
         seat = findViewById(R.id.selectRider);
         profile = findViewById(R.id.profile_button);
         spin = findViewById(R.id.spinner);
+        tv = findViewById(R.id.textView);
 
         ArrayAdapter<CharSequence> spinAdapter = ArrayAdapter.createFromResource(this, R.array.spinner, android.R.layout.simple_spinner_dropdown_item);
         spin.setAdapter(spinAdapter);
         spin.setOnItemSelectedListener(new MySpinner());
 
-        list = new ArrayList<Post>();
+        list = new ArrayList<OfferData>();
 
+        // loadUserInformation();
 
         DriversRecyclerView drv = new DriversRecyclerView(this);
         rView.setAdapter(drv);
@@ -56,6 +82,43 @@ public class Home_Page extends AppCompatActivity implements View.OnClickListener
         car.setOnClickListener(this);
         seat.setOnClickListener(this);
         profile.setOnClickListener(this);
+    }
+
+    private void loadUserInformation() {
+        DatabaseReference dbRef = fd.getReference("Users");
+
+        dbRef.child(uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(Home_Page.this, "Failed to Load User Data!", Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
+    private void checkPending() {
+        DatabaseReference dbRef = fd.getReference("Users");
+
+        dbRef.child(uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                if(user.getPp() != null) {
+                    tv.setText(user.getPp().getAcceptorID());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(Home_Page.this, "Failed to Load User Data!", Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 
     @Override
@@ -74,29 +137,37 @@ public class Home_Page extends AppCompatActivity implements View.OnClickListener
     }
     private void setListData(String path){
 
-        final RidersRecyclerView.MyClickListener mcl = new RidersRecyclerView.MyClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                if(position == 1) {
-                    startActivity(new Intent(Home_Page.this, Home_Page.class));
-                } else if(position == 2) {
-                    startActivity(new Intent(Home_Page.this, DriverOptionsPage.class));
-                }
-
-            }
-        };
-
         //ArrayList<Post> al = new ArrayList<Post>();
         DatabaseReference dbr = fd.getReference(path);
         dbr.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear();
+                String[] tempArr;
+                tempArr = new String[(int)snapshot.getChildrenCount()];
 
+                final RidersRecyclerView.MyClickListener mcl = new RidersRecyclerView.MyClickListener() {
+                    @Override
+                    public void onItemClick(int position) {
+                        Log.d(TAG, "Position clicked: "+ position);
+
+                        Bundle bundle = new Bundle();
+                        Log.d(TAG, "post key: "+ list.get(position).getPosterID());
+
+                        Intent intent = new Intent(Home_Page.this, ConfirmationPageActivity.class);
+                        bundle.putString( "postKey", "" + tempArr[position] );
+                        intent.putExtras( bundle );
+                        startActivity( intent );
+                    }
+                };
+
+                int count = 0;
                 for (DataSnapshot dSnapshot : snapshot.getChildren()){
-                    Log.d(TAG, "Value added: "+dSnapshot.getValue(Post.class).toString());
-                    Log.d(TAG, "name of person: "+dSnapshot.getValue(Post.class).getPoster_name());
-                    list.add(dSnapshot.getValue(Post.class));
+                    Log.d(TAG, "Value added: "+dSnapshot.getKey());
+                    Log.d(TAG, "name of person: "+dSnapshot.getValue(OfferData.class).getPosterName());
+                    list.add(dSnapshot.getValue(OfferData.class));
+                    tempArr[count] = dSnapshot.getKey();
+                    count++;
                 }
 
                 RidersRecyclerView rrv = new RidersRecyclerView(Home_Page.this, list, mcl);
@@ -120,7 +191,7 @@ public class Home_Page extends AppCompatActivity implements View.OnClickListener
             if(adapterView.getItemAtPosition(i).equals("Rider")){
                 setListData("RequestData");
             }else if(adapterView.getItemAtPosition(i).equals("Driver")){
-                setListData("Posts");
+                setListData("OfferData");
             }
 
         }

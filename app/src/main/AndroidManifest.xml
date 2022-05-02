@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mobile_Dev_Final_Project">
         <activity
+            android:name=".ConfirmationPageActivity"
+            android:exported="false" />
+        <activity
             android:name=".RiderOptionsPage"
             android:exported="false" />
         <activity

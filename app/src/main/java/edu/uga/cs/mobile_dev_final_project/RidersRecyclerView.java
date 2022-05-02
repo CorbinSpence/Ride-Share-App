@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.zip.Inflater;
 
 public class RidersRecyclerView  extends RecyclerView.Adapter<RidersRecyclerView.MyViewHolder> {
 
@@ -21,17 +20,17 @@ public class RidersRecyclerView  extends RecyclerView.Adapter<RidersRecyclerView
     private final String TAG = "RiderRecyclerView";
     private MyClickListener mMyClickListener;
 
-    public RidersRecyclerView (Context context, @NonNull ArrayList<Post> postList, MyClickListener myClickListener){
+    public RidersRecyclerView (Context context, @NonNull ArrayList<OfferData> offerDataList, MyClickListener myClickListener){
         mMyClickListener = myClickListener;
         ArrayList<String> nameList = new ArrayList<String>();
         ArrayList<String> genderList = new ArrayList<String>();
-        for(Post post: postList){
-            Log.d(TAG, "Name added: "+post.getPoster_name());
-            Log.d(TAG, "Gender added: "+post.getGender());
-            nameList.add(post.getPoster_name());
-            genderList.add(post.getGender());
+        for(OfferData offerData : offerDataList){
+            Log.d(TAG, "Name added: "+ offerData.getPosterName());
+            Log.d(TAG, "Gender added: "+ offerData.getPosterGender());
+            nameList.add(offerData.getPosterName());
+            genderList.add(offerData.getPosterGender());
         }
-        Log.d(TAG, "End of post loop. Array Size: "+postList.size());
+        Log.d(TAG, "End of post loop. Array Size: "+ offerDataList.size());
         riderNames = new String[nameList.size()];
         riderGenders = new String[genderList.size()];
         nameList.toArray(riderNames);
@@ -52,23 +51,26 @@ public class RidersRecyclerView  extends RecyclerView.Adapter<RidersRecyclerView
         View v = i.inflate(R.layout.recycle_view_rider_option, parent,false);
 
         MyViewHolder vh = new MyViewHolder( v ); // don't pass in null this is just for demonstration
-        int position = vh.getAdapterPosition();
-        vh.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // get the position of this Vh
-                if (mMyClickListener != null) mMyClickListener.onItemClick(position);
-            }
-        });
 
 
-        return new MyViewHolder(v);
+
+        return vh;
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.name.setText(riderNames[position]);
         holder.gender.setText(riderGenders[position]);
+        int pos = holder.getAdapterPosition();
+        position = holder.getAdapterPosition();
+        Log.d(TAG, "AHHHHHHHHHHHHHHHH: "+pos );
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // get the position of this Vh
+                if (mMyClickListener != null) mMyClickListener.onItemClick(pos);
+            }
+        });
     }
 
     @Override

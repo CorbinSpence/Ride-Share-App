@@ -14,15 +14,12 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 public class UserProfileActivity extends AppCompatActivity implements View.OnClickListener {
@@ -133,39 +130,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
             return;
         }
 
-        /*if(password.length() < 8 || password.length() > 16) {
-            et_changePassword.setError("Password must be 8 to 16 digits long!");
-            et_changePassword.requestFocus();
-            return;
-        } *//*else {
-            if( !password.isEmpty() ) {
-                updatePassword(FirebaseAuth.getInstance().getCurrentUser(), password);
-            }
-        }*/
-
-        /*AuthCredential cred = EmailAuthProvider.getCredential("", "");
-        fbUser.reauthenticate(cred).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                FirebaseUser fbUser = FirebaseAuth.getInstance().getCurrentUser();
-                fbUser.updateEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(UserProfileActivity.this, "Email updated!", Toast.LENGTH_LONG).show();
-                    }
-                });
-                if(!password.isEmpty()) {
-                    fbUser.updatePassword(password).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            Toast.makeText(UserProfileActivity.this, "Password updated!", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                }
-            }
-        });*/
-
-        User user1 = new User(email, fullName, user.getTravelPoints());
+        User user1 = new User(email, fullName, user.getTravelPoints(), user.getGender(), user.getPp(), user.getPastRides());
 
         dbRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .setValue(user1).addOnCompleteListener(new OnCompleteListener<Void>() {

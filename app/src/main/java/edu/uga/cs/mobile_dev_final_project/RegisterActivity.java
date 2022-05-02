@@ -7,8 +7,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +29,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private EditText et_password;
     private EditText et_fullName;
 
+    private Spinner spin;
+
     private Button register;
 
     @Override
@@ -39,9 +43,16 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         et_email = findViewById(R.id.new_email_input);
         et_password = findViewById(R.id.new_password_input);
         et_fullName = findViewById(R.id.new_fullname_input);
+        spin = findViewById(R.id.new_gender_input);
+
+        ArrayAdapter<CharSequence> spinAdapter = ArrayAdapter.createFromResource(this, R.array.spinnerGender, android.R.layout.simple_spinner_dropdown_item);
+        spin.setAdapter(spinAdapter);
 
         register = findViewById(R.id.button_register_user);
         register.setOnClickListener(this);
+
+
+
     }
 
     @Override
@@ -61,6 +72,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         String email = et_email.getText().toString().trim();
         String password = et_password.getText().toString().trim();
         String fullName = et_fullName.getText().toString().trim();
+        String gender = spin.getSelectedItem().toString();
 
         if(fullName.isEmpty()) {
             et_fullName.setError("Full Name field is required!");
@@ -96,7 +108,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()) {
-                    User user = new User(email, fullName, 250);
+                    User user = new User(email, fullName, 250, gender, null, null);
 
                     FirebaseDatabase.getInstance().getReference("Users")
                             .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -104,10 +116,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()) {
-                                finish();
+
                                 Toast.makeText(RegisterActivity.this, "User registered!", Toast.LENGTH_LONG).show();
-                                startActivity(new Intent(RegisterActivity.this, UserProfileActivity.class));
+                                startActivity(new Intent(RegisterActivity.this, Home_Page.class));
                                 // go back to login layout
+                                finish();
                             } else {
                                 Toast.makeText(RegisterActivity.this, "Register Failed! Try Again!", Toast.LENGTH_LONG).show();
                             }

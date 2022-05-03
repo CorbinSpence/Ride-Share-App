@@ -1,10 +1,6 @@
 package edu.uga.cs.mobile_dev_final_project;
 
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -26,8 +21,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.Calendar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,11 +34,14 @@ public class ConfirmationPageFragment extends Fragment implements View.OnClickLi
     private FirebaseAuth mAuth;
     private DatabaseReference refUsers;
     private DatabaseReference refOffers;
+    private DatabaseReference refRequests;
     private String uid;
     private String key;
 
     private static final String POST_KEY = "postKey";
+    private static final String POST_TYPE = "postType";
     private String postKey;
+    private int postType;
 
     TextView tv;
     Button button;
@@ -68,6 +64,7 @@ public class ConfirmationPageFragment extends Fragment implements View.OnClickLi
         Bundle b = getArguments();
         if (b != null) {
             postKey = getArguments().getString(POST_KEY);
+            postType = getArguments().getInt(POST_TYPE);
             Log.d(TAG, "HI: " + postKey);
         }
     }
@@ -81,6 +78,7 @@ public class ConfirmationPageFragment extends Fragment implements View.OnClickLi
         mAuth = FirebaseAuth.getInstance();
         refUsers = FirebaseDatabase.getInstance().getReference("Users");
         refOffers = FirebaseDatabase.getInstance().getReference("OfferData");
+        refRequests = FirebaseDatabase.getInstance().getReference("RequestData");
         uid = mAuth.getCurrentUser().getUid().toString();
 
         tv = v.findViewById(R.id.textView5);
@@ -101,29 +99,56 @@ public class ConfirmationPageFragment extends Fragment implements View.OnClickLi
     }
 
     private void iDunno() {
-        // read data from the post clicked
-        refOffers.child( postKey ).addValueEventListener( new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                OfferData offer = snapshot.getValue(OfferData.class);
-                //PendingPost pending;
+        if( postType == 0 ) {
+            refRequests.child( postKey ).addValueEventListener( new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    RequestData requestData = snapshot.getValue(RequestData.class);
+                    //PendingPost pending;
 
-                refUsers.child(offer.getPosterID()).child("pp").setValue( new PendingPost( postKey, uid ) )
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()) {
-                            Intent intent = new Intent(getActivity(), Home_Page.class);
-                            // Toast hereeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                            startActivity( intent);
-                        } else {} // end if-else
-                    }
-                });
+                    refUsers.child(requestData.getPosterID()).child("pp").setValue( new PendingPost( postKey, uid, postType) )
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()) {
+                                        Intent intent = new Intent(getActivity(), Home_Page.class);
+                                        // Toast hereeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                                        startActivity( intent);
+                                    } else {} // end if-else
+                                }
+                            });
 
-            }
+                }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {}
+            });
+        } else if( postType == 1 ) {
+            // read data from the post clicked
+            refOffers.child( postKey ).addValueEventListener( new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    OfferData offer = snapshot.getValue(OfferData.class);
+                    //PendingPost pending;
+
+                    refUsers.child(offer.getPosterID()).child("pp").setValue( new PendingPost( postKey, uid, postType) )
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()) {
+                                        Intent intent = new Intent(getActivity(), Home_Page.class);
+                                        // Toast hereeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                                        startActivity( intent);
+                                    } else {} // end if-else
+                                }
+                            });
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {}
+            });
+        }
+
     }
 }

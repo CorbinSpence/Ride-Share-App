@@ -2,7 +2,6 @@ package edu.uga.cs.mobile_dev_final_project;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,7 +21,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
-import java.util.Iterator;
 
 public class DriverOptionsPage extends AppCompatActivity implements View.OnClickListener {
 
@@ -127,7 +125,7 @@ public class DriverOptionsPage extends AppCompatActivity implements View.OnClick
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()) {
-                                user.setPp( new PendingPost( key, "" ) );
+                                user.setPp( new PendingPost( key, "", 1) );
 
                                 // AAAAAAAAAAAAAAAAAAAAAA
                                 Log.d(TAG, "pending post: " + user.getPp() );

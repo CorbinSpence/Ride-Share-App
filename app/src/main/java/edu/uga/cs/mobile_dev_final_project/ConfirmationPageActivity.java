@@ -20,8 +20,11 @@ public class ConfirmationPageActivity extends AppCompatActivity {
         Fragment fragment = new ConfirmationPageFragment();
 
         String temp = intent.getStringExtra("postKey");
+        int tempInt = intent.getIntExtra("postType", 0);
+
         Bundle bundle = new Bundle();
         bundle.putString( "postKey", temp );
+        bundle.putInt( "postType", tempInt);
         Log.d("TAG", "post key: "+ temp);
         fragment.setArguments(bundle);
 

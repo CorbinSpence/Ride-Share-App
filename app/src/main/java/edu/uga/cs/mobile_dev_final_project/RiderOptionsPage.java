@@ -91,7 +91,7 @@ public class RiderOptionsPage extends AppCompatActivity implements View.OnClickL
                     fd.getReference("RequestData").push().setValue(requestData).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            user.setPp(new PendingPost(posterID, ""));
+                            user.setPp(new PendingPost(posterID, "", 0));
                             userReference.child(posterID).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {

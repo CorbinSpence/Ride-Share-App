@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.DownloadManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +19,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,17 +34,18 @@ import java.util.Iterator;
 public class Home_Page extends AppCompatActivity implements View.OnClickListener{
     private RecyclerView rView;
     private ImageView car, seat;
-    private Button profile;
+    private Button profile, button2;
     private ArrayList<OfferData> list;
     private final String TAG = "HomePage";
     private FirebaseDatabase fd = FirebaseDatabase.getInstance();
     private Spinner spin;
     private FirebaseAuth mAuth;
     private String uid;
-    private User user2;
-    private PendingPost pp;
+    // private User user2;
+    // private PendingPost pp;
 
     private TextView tv;
+    private int post_type;
 
     @Override
     protected void onStart() {
@@ -65,6 +69,7 @@ public class Home_Page extends AppCompatActivity implements View.OnClickListener
         car = findViewById(R.id.selectDriver);
         seat = findViewById(R.id.selectRider);
         profile = findViewById(R.id.profile_button);
+        button2 = findViewById(R.id.button2);
         spin = findViewById(R.id.spinner);
         tv = findViewById(R.id.textView);
 
@@ -74,14 +79,15 @@ public class Home_Page extends AppCompatActivity implements View.OnClickListener
 
         list = new ArrayList<OfferData>();
 
-        // loadUserInformation();
-
-        DriversRecyclerView drv = new DriversRecyclerView(this);
+        DriversRecyclerView drv = new DriversRecyclerView( Home_Page.this );
         rView.setAdapter(drv);
-        rView.setLayoutManager(new LinearLayoutManager(this));
+        rView.setLayoutManager(new LinearLayoutManager(Home_Page.this ));
+
         car.setOnClickListener(this);
         seat.setOnClickListener(this);
         profile.setOnClickListener(this);
+
+        loadUserInformation();
     }
 
     private void loadUserInformation() {
@@ -91,26 +97,24 @@ public class Home_Page extends AppCompatActivity implements View.OnClickListener
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(Home_Page.this, "Failed to Load User Data!", Toast.LENGTH_LONG).show();
-            }
-        });
-
-    }
-
-    private void checkPending() {
-        DatabaseReference dbRef = fd.getReference("Users");
-
-        dbRef.child(uid).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User user = snapshot.getValue(User.class);
-                if(user.getPp() != null) {
-                    tv.setText(user.getPp().getAcceptorID());
+                if( snapshot.child("pp").exists() ) {
+                    if( snapshot.child("pp").child("acceptorID").exists() ) {
+                        String temp = user.getPp().getAcceptorID();
+                        if( !temp.isEmpty() ) {
+                            button2.setOnClickListener(Home_Page.this);
+                            button2.setVisibility(View.VISIBLE);
+                        } else {
+                            button2.setVisibility(View.GONE);
+                        }
+                    } else {
+                        button2.setVisibility(View.GONE);
+                    }
+                } else {
+                    button2.setVisibility(View.GONE);
                 }
+
+
             }
 
             @Override
@@ -133,9 +137,80 @@ public class Home_Page extends AppCompatActivity implements View.OnClickListener
             case R.id.profile_button:
                 startActivity(new Intent(this, UserProfileActivity.class));
                 break;
+            case R.id.button2:
+                doTransaction();
+                break;
         }
     }
+
+    private void doTransaction() {
+        DatabaseReference dbRef = fd.getReference("Users");
+
+        dbRef.child(uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                PendingPost pendingPost = snapshot.child("pp").getValue(PendingPost.class);
+                String temmp = pendingPost.getAcceptorID();
+
+                dbRef.child( temmp ).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        User user2 = snapshot.getValue(User.class);
+                        // PendingPost pendingPost2 = snapshot.child("pp").getValue(PendingPost.class);
+
+                        if(pendingPost.getPost_type() == 0) {
+
+                            user.setTravelPoints( user.getTravelPoints() - 50 );
+                            user2.setTravelPoints( user2.getTravelPoints() + 100 );
+
+                            fd.getReference("OfferData").child(user.getPp().getPostID()).removeValue();
+
+                            user.setPp(null);
+
+                            dbRef.child( uid ).setValue( user );
+                            dbRef.child( pendingPost.getAcceptorID() ).setValue( user2 );
+                            finish();
+
+                        } else if (pendingPost.getPost_type() == 1) {
+                            user.setTravelPoints( user.getTravelPoints() + 100 );
+                            user2.setTravelPoints( user2.getTravelPoints() - 50 );
+
+                            fd.getReference("OfferData").child(user.getPp().getPostID()).removeValue();
+
+                            user.setPp(null);
+
+                            dbRef.child( uid ).setValue( user );
+                            dbRef.child( pendingPost.getAcceptorID() ).setValue( user2 );
+                            finish();
+
+                        }
+
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(Home_Page.this, "Failed to Load User Data!", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(Home_Page.this, "Failed to Load User Data!", Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
     private void setListData(String path){
+        if(path.equals("RequestData")) {
+            post_type = 0;
+        } else if(path.equals("OfferData")) {
+            post_type = 1;
+        }
 
         //ArrayList<Post> al = new ArrayList<Post>();
         DatabaseReference dbr = fd.getReference(path);
@@ -156,6 +231,7 @@ public class Home_Page extends AppCompatActivity implements View.OnClickListener
 
                         Intent intent = new Intent(Home_Page.this, ConfirmationPageActivity.class);
                         bundle.putString( "postKey", "" + tempArr[position] );
+                        bundle.putInt("postType", post_type);
                         intent.putExtras( bundle );
                         startActivity( intent );
                     }

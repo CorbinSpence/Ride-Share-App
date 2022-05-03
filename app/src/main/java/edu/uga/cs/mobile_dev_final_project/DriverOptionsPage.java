@@ -44,7 +44,7 @@ public class DriverOptionsPage extends AppCompatActivity implements View.OnClick
 
     private EditText street_pickup, city_pickup, state_pickup, zip_pickup;
     private EditText street_dest, city_dest, state_dest, zip_dest;
-    private Button btn_submit;
+    private Button btn_submit, cancel;
 
     @Override
     protected void onStart() {
@@ -76,9 +76,11 @@ public class DriverOptionsPage extends AppCompatActivity implements View.OnClick
         state_dest = findViewById(R.id.destination_state_input);
         zip_dest = findViewById(R.id.destination_zip_input);
         btn_submit = findViewById(R.id.button3);
+        cancel = findViewById(R.id.offerCancel);
         // rv = findViewById(R.id.driver_page_rv);
 
         btn_submit.setOnClickListener( this );
+        cancel.setOnClickListener(this);
 
     }
 
@@ -88,6 +90,8 @@ public class DriverOptionsPage extends AppCompatActivity implements View.OnClick
             case R.id.button3:
                 submit();
                 break;
+            case R.id.offerCancel:
+                finish();
         }
     }
 

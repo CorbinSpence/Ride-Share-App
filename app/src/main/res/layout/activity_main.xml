@@ -15,11 +15,11 @@
         android:adjustViewBounds="true"
         android:scaleType="centerInside"
         app:layout_constraintBottom_toTopOf="@+id/username_prompt"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintVertical_chainStyle="packed"
-        app:srcCompat="@drawable/ridesharingapp"
-        tools:layout_editor_absoluteX="0dp" />
+        app:srcCompat="@drawable/ridesharingapp" />
 
     <TextView
         android:id="@+id/username_prompt"
@@ -27,8 +27,8 @@
         android:layout_height="wrap_content"
         android:text="@string/username_text"
         app:layout_constraintBottom_toTopOf="@+id/username_input"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <TextView
         android:id="@+id/password_prompt"
@@ -36,13 +36,14 @@
         android:layout_height="wrap_content"
         android:text="@string/password_text"
         app:layout_constraintBottom_toTopOf="@+id/password_input"
-        app:layout_constraintTop_toBottomOf="@+id/username_input"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/username_input" />
 
     <EditText
         android:id="@+id/password_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="textPassword"
         app:layout_constraintBottom_toTopOf="@+id/button_sign_in"
         app:layout_constraintTop_toBottomOf="@+id/password_prompt"
         tools:layout_editor_absoluteX="0dp" />

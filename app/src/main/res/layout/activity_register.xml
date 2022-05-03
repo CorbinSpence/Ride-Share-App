@@ -15,6 +15,8 @@
         android:adjustViewBounds="true"
         android:scaleType="centerInside"
         app:layout_constraintBottom_toTopOf="@+id/new_fullname_prompt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintVertical_chainStyle="packed"
@@ -26,6 +28,7 @@
         android:layout_height="wrap_content"
         android:text="@string/full_name"
         app:layout_constraintBottom_toTopOf="@+id/new_fullname_input"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <EditText
@@ -41,6 +44,7 @@
         android:layout_height="wrap_content"
         android:text="@string/email_text"
         app:layout_constraintBottom_toTopOf="@+id/new_email_input"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/new_fullname_input" />
 
     <EditText
@@ -56,8 +60,8 @@
         android:layout_height="wrap_content"
         android:text="@string/gender"
         app:layout_constraintBottom_toTopOf="@+id/new_gender_input"
-        app:layout_constraintTop_toBottomOf="@+id/new_email_input"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/new_email_input" />
 
     <Spinner
         android:id="@+id/new_gender_input"
@@ -73,13 +77,14 @@
         android:layout_height="wrap_content"
         android:text="@string/password_text"
         app:layout_constraintBottom_toTopOf="@+id/new_password_input"
-        app:layout_constraintTop_toBottomOf="@+id/new_gender_input"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/new_gender_input" />
 
     <EditText
         android:id="@+id/new_password_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="textPassword"
         app:layout_constraintBottom_toTopOf="@+id/button_register_user"
         app:layout_constraintTop_toBottomOf="@+id/new_password_prompt"
         tools:layout_editor_absoluteX="0dp" />
@@ -92,7 +97,8 @@
         android:text="REGISTER USER"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_password_input"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/new_password_input" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

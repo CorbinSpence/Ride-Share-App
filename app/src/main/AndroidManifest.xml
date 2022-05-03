@@ -11,26 +11,39 @@
         android:theme="@style/Theme.Mobile_Dev_Final_Project">
         <activity
             android:name=".ConfirmationPageActivity"
-            android:exported="false" />
+            android:screenOrientation="fullSensor"
+            android:exported="false"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
         <activity
             android:name=".RiderOptionsPage"
-            android:exported="false" />
+            android:screenOrientation="fullSensor"
+            android:exported="false"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
         <activity
             android:name=".DriverOptionsPage"
+            android:screenOrientation="fullSensor"
             android:exported="false"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".Home_Page"
-            android:exported="false" />
+            android:screenOrientation="fullSensor"
+            android:exported="false"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
         <activity
             android:name=".UserProfileActivity"
-            android:exported="false" />
+            android:screenOrientation="fullSensor"
+            android:exported="false"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
         <activity
             android:name=".RegisterActivity"
-            android:exported="false" />
+            android:screenOrientation="fullSensor"
+            android:exported="false"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:screenOrientation="fullSensor"
+            android:exported="true"
+            android:windowSoftInputMode="stateHidden|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

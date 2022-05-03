@@ -145,50 +145,71 @@ public class Home_Page extends AppCompatActivity implements View.OnClickListener
 
     private void doTransaction() {
         DatabaseReference dbRef = fd.getReference("Users");
-        Log.d(TAG, "Help: 1");
-        dbRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
-
+        dbRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {   //user 1 data
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.d(TAG, "Help: 2");
                 User user = snapshot.getValue(User.class);
                 PendingPost pendingPost = snapshot.child("pp").getValue(PendingPost.class);
                 PendingPost pending = new PendingPost( pendingPost.getPostID(), pendingPost.getAcceptorID(), pendingPost.getPost_type() );
 
-                dbRef.child( pending.getAcceptorID() ).addListenerForSingleValueEvent(new ValueEventListener() {
+                dbRef.child( pending.getAcceptorID() ).addListenerForSingleValueEvent(new ValueEventListener() {   //user 2 data
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Log.d(TAG, "Help: 3");
                         User user2 = snapshot.getValue(User.class);
-                        // PendingPost pendingPost2 = snapshot.child("pp").getValue(PendingPost.class);
 
                         if(pendingPost.getPost_type() == 0) {
+                            fd.getReference("RequestData").child(user.getPp().getPostID()) // request data
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            RequestData requestData = snapshot.getValue(RequestData.class);
 
-                            user.setTravelPoints( user.getTravelPoints() - 50 );
-                            user2.setTravelPoints( user2.getTravelPoints() + 100 );
+                                            user.setTravelPoints( user.getTravelPoints() - 50 );
+                                            user2.setTravelPoints( user2.getTravelPoints() + 100 );
 
-                            fd.getReference("RequestData").child(user.getPp().getPostID()).removeValue();
+                                            user.setRide(new Ride(requestData.getPickupAddress(),requestData.getDestinationAddress(),requestData.getDateOfRide()));
+                                            user2.setRide(new Ride(requestData.getPickupAddress(),requestData.getDestinationAddress(),requestData.getDateOfRide()));
 
-                            Log.d(TAG, "Help: 4");
+                                            fd.getReference("RequestData").child(user.getPp().getPostID()).removeValue();
 
-                            dbRef.child( pendingPost.getAcceptorID() ).setValue( user2 );
-                            finish();
+                                            user.setPp(null);
+                                            dbRef.child( uid ).setValue( user );
+                                            dbRef.child( pendingPost.getAcceptorID() ).setValue( user2 );
+                                            finish();
+                                        }
 
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
                         } else if (pendingPost.getPost_type() == 1) {
-                            user.setTravelPoints( user.getTravelPoints() + 100 );
-                            user2.setTravelPoints( user2.getTravelPoints() - 50 );
+                            fd.getReference("OfferData").child(user.getPp().getPostID())
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            OfferData offerData = snapshot.getValue(OfferData.class);
 
-                            fd.getReference("OfferData").child(user.getPp().getPostID()).removeValue();
+                                            user.setTravelPoints( user.getTravelPoints() + 100 );
+                                            user2.setTravelPoints( user2.getTravelPoints() - 50 );
 
-                            // user.setPp(null);
-                            Log.d(TAG, "Help: 5");
-                            // dbRef.child( uid ).setValue( user );
-                            dbRef.child( pendingPost.getAcceptorID() ).setValue( user2 );
-                            finish();
+                                            fd.getReference("OfferData").child(user.getPp().getPostID()).removeValue();
 
+                                            user.setRide(new Ride(offerData.getPickupAddress(),offerData.getDestinationAddress(),offerData.getDateOfRide()));
+                                            user2.setRide(new Ride(offerData.getPickupAddress(),offerData.getDestinationAddress(),offerData.getDateOfRide()));
+
+                                            user.setPp(null);
+                                            dbRef.child( uid ).setValue( user );
+                                            dbRef.child( pendingPost.getAcceptorID() ).setValue( user2 );
+                                            finish();
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
                         }
-                        user.setPp(null);
-                        dbRef.child( uid ).setValue( user );
 
                     }
 

@@ -9,115 +9,75 @@
 
 
     <TextView
-        android:id="@+id/travelPoints_display"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="travel points: "
-        app:layout_constraintBottom_toTopOf="@+id/fullName_display"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
-        tools:layout_editor_absoluteX="35dp" />
-
-    <TextView
         android:id="@+id/fullName_display"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/full_name"
+        android:textSize="34sp"
         app:layout_constraintBottom_toTopOf="@+id/email_display"
-        app:layout_constraintStart_toStartOf="@+id/travelPoints_display"
-        app:layout_constraintTop_toBottomOf="@+id/travelPoints_display" />
+        app:layout_constraintEnd_toStartOf="@+id/travelPoints_display"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.00999999"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
         android:id="@+id/email_display"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/email_text"
-        app:layout_constraintBottom_toTopOf="@+id/profile_fullName"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintStart_toStartOf="@+id/fullName_display"
-        app:layout_constraintTop_toBottomOf="@+id/fullName_display" />
+        app:layout_constraintTop_toBottomOf="@+id/fullName_display"
+        app:layout_constraintVertical_bias="0.089" />
+
+    <TextView
+        android:id="@+id/travelPoints_display"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="travel points: "
+        android:textSize="34sp"
+        app:layout_constraintBottom_toBottomOf="@+id/fullName_display"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/fullName_display"
+        app:layout_constraintTop_toTopOf="@+id/fullName_display" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/edit_profile"
-        app:layout_constraintBottom_toTopOf="@+id/profile_fullName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
-
-    <TextView
-        android:id="@+id/profile_fullName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/full_name"
-        app:layout_constraintBottom_toTopOf="@+id/profile_fullName_form"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <EditText
-        android:id="@+id/profile_fullName_form"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/profile_email"
-        app:layout_constraintTop_toBottomOf="@+id/profile_fullName" />
-
-    <TextView
-        android:id="@+id/profile_email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/email_text"
-        app:layout_constraintBottom_toTopOf="@+id/profile_email_form"
-        app:layout_constraintTop_toBottomOf="@+id/profile_fullName_form" />
-
-    <EditText
-        android:id="@+id/profile_email_form"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/profile_password"
-        app:layout_constraintTop_toBottomOf="@+id/profile_email" />
-
-    <TextView
-        android:id="@+id/profile_password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/new_password"
-        app:layout_constraintBottom_toTopOf="@+id/profile_password_form"
-        app:layout_constraintTop_toBottomOf="@+id/profile_email_form" />
-
-    <EditText
-        android:id="@+id/profile_password_form"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/button_update_user"
-        app:layout_constraintTop_toBottomOf="@+id/profile_password" />
-
-    <Button
-        android:id="@+id/button_update_user"
-        android:layout_width="206dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.5"
-        android:backgroundTint="@android:color/holo_orange_dark"
-        android:text="UPDATE PROFILE"
-        android:textColor="@android:color/white"
+        android:text="@string/previous_ride"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button_logout"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_password_form" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/button_logout"
+        app:layout_constraintEnd_toEndOf="@+id/textView"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.052" />
 
     <Button
         android:id="@+id/button_logout"
-        android:layout_width="205dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="0.5"
         android:backgroundTint="@android:color/holo_orange_dark"
         android:text="LOGOUT"
-        app:layout_constraintBottom_toBottomOf="@+id/button_update_user"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button_update_user"
-        app:layout_constraintTop_toTopOf="@+id/button_update_user" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

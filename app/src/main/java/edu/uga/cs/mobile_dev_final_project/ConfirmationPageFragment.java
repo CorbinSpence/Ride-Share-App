@@ -81,8 +81,8 @@ public class ConfirmationPageFragment extends Fragment implements View.OnClickLi
         refRequests = FirebaseDatabase.getInstance().getReference("RequestData");
         uid = mAuth.getCurrentUser().getUid().toString();
 
-        tv = v.findViewById(R.id.textView5);
-        tv.setText( "postKey: " + postKey );
+        // tv = v.findViewById(R.id.textView5);
+        // tv.setText( "postKey: " + postKey );
         button = v.findViewById(R.id.button_cnf);
         button.setOnClickListener( this );
 

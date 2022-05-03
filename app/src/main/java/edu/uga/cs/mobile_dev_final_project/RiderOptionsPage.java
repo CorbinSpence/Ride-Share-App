@@ -102,47 +102,51 @@ public class RiderOptionsPage extends AppCompatActivity implements View.OnClickL
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
-
-                if( snapshot.child("pp").exists() ) {
-                    Log.d(TAG, "Create new post failed: pending post");
-                    Toast.makeText(RiderOptionsPage.this, "Can only have one pending post!", Toast.LENGTH_LONG).show();
+                if( user.getTravelPoints() < 50 ) {
+                    Log.d(TAG, "Create new post failed: not enough points");
+                    Toast.makeText(RiderOptionsPage.this, "You do not have enough travel points!", Toast.LENGTH_LONG).show();
                 } else {
-                    RequestData request = new RequestData( uid, user.getFullName(), user.getGender(),
-                            pickup_address, destination_address, date_of_ride, travel_type );
+                    if( snapshot.child("pp").exists() ) {
+                        Log.d(TAG, "Create new post failed: pending post");
+                        Toast.makeText(RiderOptionsPage.this, "You already have a post pending!", Toast.LENGTH_LONG).show();
+                    } else {
+                        RequestData request = new RequestData( uid, user.getFullName(), user.getGender(),
+                                pickup_address, destination_address, date_of_ride, travel_type );
 
-                    DatabaseReference ref = refRequests.push();
-                    key = ref.getKey();
+                        DatabaseReference ref = refRequests.push();
+                        key = ref.getKey();
 
-                    ref.setValue(request).addOnCompleteListener( new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()) {
-                                user.setPp( new PendingPost( key, "", 0) );
+                        ref.setValue(request).addOnCompleteListener( new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful()) {
+                                    user.setPp( new PendingPost( key, "", 0) );
 
-                                // AAAAAAAAAAAAAAAAAAAAAA
-                                Log.d(TAG, "pending post: " + user.getPp() );
+                                    // AAAAAAAAAAAAAAAAAAAAAA
+                                    Log.d(TAG, "pending post: " + user.getPp() );
 
-                                refUsers.child(uid).setValue(user).addOnCompleteListener( new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if(task.isSuccessful()) {
-                                            finish();
-                                            Log.d(TAG, "changing post details: yes");
-                                            Toast.makeText(RiderOptionsPage.this, "Post offer created!", Toast.LENGTH_LONG).show();
+                                    refUsers.child(uid).setValue(user).addOnCompleteListener( new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()) {
+                                                finish();
+                                                Log.d(TAG, "changing post details: yes");
+                                                Toast.makeText(RiderOptionsPage.this, "Post offer created!", Toast.LENGTH_LONG).show();
 
-                                            // go back to home page after creating new ride offer post
-                                            startActivity(new Intent(RiderOptionsPage.this, Home_Page.class));
+                                                // go back to home page after creating new ride offer post
+                                                startActivity(new Intent(RiderOptionsPage.this, Home_Page.class));
 
-                                        } else {} // end if-else
-                                    } // end onComplete
-                                }); // end refUsers addOnCompleteListener
+                                            } else {} // end if-else
+                                        } // end onComplete
+                                    }); // end refUsers addOnCompleteListener
 
-                            } else {} // end if-else
+                                } else {} // end if-else
 
-                        } // end onComplete
-                    }); // end ref addOnCompleteListener
+                            } // end onComplete
+                        }); // end ref addOnCompleteListener
 
-                } // end if-else
+                    } // end if-else
+                }
 
             } // end onDataChange
 

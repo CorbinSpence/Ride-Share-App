@@ -6,18 +6,18 @@ public class User {
     private int travelPoints;
     private String gender;
     private PendingPost pp;
-    private PastRides pastRides;
+    private Ride ride;
 
     public User() {}
 
-    public User(String email, String fullName, int travelPoints, String gender, PendingPost pp, PastRides pastRides) {
+    public User(String email, String fullName, int travelPoints, String gender, PendingPost pp, Ride ride) {
 
         this.email = email;
         this.fullName = fullName;
         this.travelPoints = travelPoints;
         this.gender = gender;
         this.pp = pp;
-        this.pastRides = pastRides;
+        this.ride = ride;
     }
 
     public String getEmail() {
@@ -60,11 +60,11 @@ public class User {
         this.pp = pp;
     }
 
-    public PastRides getPastRides() {
-        return pastRides;
+    public Ride getRide() {
+        return ride;
     }
 
-    public void setPastRides(PastRides pastRides) {
-        this.pastRides = pastRides;
+    public void setRide(Ride ride) {
+        this.ride = ride;
     }
 }

@@ -100,13 +100,15 @@ public class ConfirmationPageFragment extends Fragment implements View.OnClickLi
 
     private void iDunno() {
         if( postType == 0 ) {
-            refRequests.child( postKey ).addValueEventListener( new ValueEventListener() {
+            refRequests.child( postKey ).addListenerForSingleValueEvent( new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     RequestData requestData = snapshot.getValue(RequestData.class);
                     //PendingPost pending;
+                    RequestData request = new RequestData( requestData.getPosterID(), requestData.getPosterName(), requestData.getPosterGender(),
+                            requestData.getPickupAddress(), requestData.getDestinationAddress(), requestData.getDateOfRide(), requestData.getTravelType() );
 
-                    refUsers.child(requestData.getPosterID()).child("pp").setValue( new PendingPost( postKey, uid, postType) )
+                    refUsers.child(request.getPosterID()).child("pp").setValue( new PendingPost( postKey, uid, postType) )
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
@@ -125,13 +127,14 @@ public class ConfirmationPageFragment extends Fragment implements View.OnClickLi
             });
         } else if( postType == 1 ) {
             // read data from the post clicked
-            refOffers.child( postKey ).addValueEventListener( new ValueEventListener() {
+            refOffers.child( postKey ).addListenerForSingleValueEvent( new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     OfferData offer = snapshot.getValue(OfferData.class);
 
                     OfferData offerData = new OfferData( offer.getPosterID(), offer.getPosterName(), offer.getPosterGender(),
                             offer.getPickupAddress(), offer.getDestinationAddress(), offer.getDateOfRide(), offer.getTravelType() );
+
 
                     refUsers.child( offerData.getPosterID() ).child("pp").setValue( new PendingPost( postKey, uid, postType) )
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -144,6 +147,18 @@ public class ConfirmationPageFragment extends Fragment implements View.OnClickLi
                                     } else {} // end if-else
                                 }
                             });
+
+                    /*refUsers.child( offerData.getPosterID() ).child("pp").setValue( new PendingPost( postKey, uid, postType) )
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()) {
+                                        Intent intent = new Intent(getActivity(), Home_Page.class);
+                                        // Toast hereeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                                        startActivity( intent);
+                                    } else {} // end if-else
+                                }
+                            });*/
 
                 }
 

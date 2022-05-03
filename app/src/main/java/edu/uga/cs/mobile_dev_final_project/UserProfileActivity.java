@@ -130,7 +130,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
             return;
         }
 
-        User user1 = new User(email, fullName, user.getTravelPoints(), user.getGender(), user.getPp(), user.getPastRides());
+        User user1 = new User(email, fullName, user.getTravelPoints(), user.getGender(), user.getPp(), user.getRide());
 
         dbRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .setValue(user1).addOnCompleteListener(new OnCompleteListener<Void>() {

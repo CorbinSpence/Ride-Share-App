@@ -145,17 +145,20 @@ public class Home_Page extends AppCompatActivity implements View.OnClickListener
 
     private void doTransaction() {
         DatabaseReference dbRef = fd.getReference("Users");
+        Log.d(TAG, "Help: 1");
+        dbRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
 
-        dbRef.child(uid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.d(TAG, "Help: 2");
                 User user = snapshot.getValue(User.class);
                 PendingPost pendingPost = snapshot.child("pp").getValue(PendingPost.class);
                 PendingPost pending = new PendingPost( pendingPost.getPostID(), pendingPost.getAcceptorID(), pendingPost.getPost_type() );
 
-                dbRef.child( pending.getAcceptorID() ).addValueEventListener(new ValueEventListener() {
+                dbRef.child( pending.getAcceptorID() ).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Log.d(TAG, "Help: 3");
                         User user2 = snapshot.getValue(User.class);
                         // PendingPost pendingPost2 = snapshot.child("pp").getValue(PendingPost.class);
 
@@ -164,11 +167,10 @@ public class Home_Page extends AppCompatActivity implements View.OnClickListener
                             user.setTravelPoints( user.getTravelPoints() - 50 );
                             user2.setTravelPoints( user2.getTravelPoints() + 100 );
 
-                            fd.getReference("OfferData").child(user.getPp().getPostID()).removeValue();
+                            fd.getReference("RequestData").child(user.getPp().getPostID()).removeValue();
 
-                            user.setPp(null);
+                            Log.d(TAG, "Help: 4");
 
-                            dbRef.child( uid ).setValue( user );
                             dbRef.child( pendingPost.getAcceptorID() ).setValue( user2 );
                             finish();
 
@@ -178,15 +180,15 @@ public class Home_Page extends AppCompatActivity implements View.OnClickListener
 
                             fd.getReference("OfferData").child(user.getPp().getPostID()).removeValue();
 
-                            user.setPp(null);
-
-                            dbRef.child( uid ).setValue( user );
+                            // user.setPp(null);
+                            Log.d(TAG, "Help: 5");
+                            // dbRef.child( uid ).setValue( user );
                             dbRef.child( pendingPost.getAcceptorID() ).setValue( user2 );
                             finish();
 
                         }
-
-
+                        user.setPp(null);
+                        dbRef.child( uid ).setValue( user );
 
                     }
 
@@ -214,7 +216,7 @@ public class Home_Page extends AppCompatActivity implements View.OnClickListener
 
         //ArrayList<Post> al = new ArrayList<Post>();
         DatabaseReference dbr = fd.getReference(path);
-        dbr.addValueEventListener(new ValueEventListener() {
+        dbr.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear();

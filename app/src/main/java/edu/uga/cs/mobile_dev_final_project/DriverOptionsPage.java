@@ -106,7 +106,7 @@ public class DriverOptionsPage extends AppCompatActivity implements View.OnClick
             travel_type = 0;
         } else { travel_type = 1; }
 
-        refUsers.child(uid).addValueEventListener(new ValueEventListener() {
+        refUsers.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);

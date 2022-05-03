@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,10 +39,30 @@ public class RiderOptionsPage extends AppCompatActivity implements View.OnClickL
     private String destinationAddress;
     //private final String uID = fba.getUid().toString();
 
+    private FirebaseAuth mAuth;
+    private DatabaseReference refUsers;
+    private DatabaseReference refRequests;
+    private String uid;
+
+
+    private int post_type;        // if post type 0, rider; if post type 1, driver;
+    private int travel_type;      // if post type 0, in-town ride; if post type 1, out-of-town ride;
+    private String date_of_ride;
+    private String pickup_address;
+    private String destination_address;
+    private String poster_name;
+    private String acceptor_name;
+    private String key;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rider_options_page);
+
+        mAuth = FirebaseAuth.getInstance();
+        refUsers = FirebaseDatabase.getInstance().getReference("Users");
+        refRequests = FirebaseDatabase.getInstance().getReference("RequestData");
+        uid = mAuth.getCurrentUser().getUid().toString();
 
         request = findViewById(R.id.rideRequest);
         cancel = findViewById(R.id.rideCancel);
@@ -62,56 +84,74 @@ public class RiderOptionsPage extends AppCompatActivity implements View.OnClickL
 
     //does the function for the request ride button
     private void requestRide(){
-        pickupAddress = street_pickup.getText().toString().trim() + ", " +
+        pickup_address = street_pickup.getText().toString().trim() + ", " +
                 city_pickup.getText().toString().trim() + ", " + state_pickup.getText().toString().trim() + " " +
                 zip_pickup.getText().toString().trim();
 
-        destinationAddress = street_dest.getText().toString().trim() + ", " +
+        destination_address = street_dest.getText().toString().trim() + ", " +
                 city_dest.getText().toString().trim() + ", " + state_dest.getText().toString().trim() + " " +
                 zip_dest.getText().toString().trim();
 
-        int travelType;
-        if( city_pickup.getText().toString().trim().equals( city_dest.getText().toString().trim() ) ) {
-            travelType = 0;
-        } else { travelType = 1; }
+        date_of_ride = Calendar.getInstance().getTime().toString();
 
-        String posterID = currentUser.getUid().toString();
-        userReference.child(posterID).addValueEventListener(new ValueEventListener() {
+        if( city_pickup.getText().toString().trim().equals( city_dest.getText().toString().trim() ) ) {
+            travel_type = 0;
+        } else { travel_type = 1; }
+
+        refUsers.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
 
-                if(!snapshot.child("pp").exists()) {
-                    String posterName = user.getFullName();
-                    String posterGender = user.getGender();
-                    //String pickupAddress = "A"; //fill out
-                    //String destinationAddress = "B"; //fill out
-                    String dateOfRide = Calendar.getInstance().getTime().toString();
-                    RequestData requestData = new RequestData("" + posterID, posterName, posterGender, pickupAddress, destinationAddress, dateOfRide, travelType);
-                    fd.getReference("RequestData").push().setValue(requestData).addOnCompleteListener(new OnCompleteListener<Void>() {
+                if( snapshot.child("pp").exists() ) {
+                    Log.d(TAG, "Create new post failed: pending post");
+                    Toast.makeText(RiderOptionsPage.this, "Can only have one pending post!", Toast.LENGTH_LONG).show();
+                } else {
+                    RequestData request = new RequestData( uid, user.getFullName(), user.getGender(),
+                            pickup_address, destination_address, date_of_ride, travel_type );
+
+                    DatabaseReference ref = refRequests.push();
+                    key = ref.getKey();
+
+                    ref.setValue(request).addOnCompleteListener( new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            user.setPp(new PendingPost(posterID, "", 0));
-                            userReference.child(posterID).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    Toast.makeText(RiderOptionsPage.this, "info added", Toast.LENGTH_LONG).show();
-                                    finish();
-                                }
-                            });
-                        }
-                    });
-                }else{
-                    Toast.makeText(RiderOptionsPage.this, "Can only have one pending post!", Toast.LENGTH_LONG).show();
-                }
-            }
+                            if(task.isSuccessful()) {
+                                user.setPp( new PendingPost( key, "", 0) );
+
+                                // AAAAAAAAAAAAAAAAAAAAAA
+                                Log.d(TAG, "pending post: " + user.getPp() );
+
+                                refUsers.child(uid).setValue(user).addOnCompleteListener( new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful()) {
+                                            finish();
+                                            Log.d(TAG, "changing post details: yes");
+                                            Toast.makeText(RiderOptionsPage.this, "Post offer created!", Toast.LENGTH_LONG).show();
+
+                                            // go back to home page after creating new ride offer post
+                                            startActivity(new Intent(RiderOptionsPage.this, Home_Page.class));
+
+                                        } else {} // end if-else
+                                    } // end onComplete
+                                }); // end refUsers addOnCompleteListener
+
+                            } else {} // end if-else
+
+                        } // end onComplete
+                    }); // end ref addOnCompleteListener
+
+                } // end if-else
+
+            } // end onDataChange
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
+            } // end onCancelled
 
+        }); // end refUsers addValueEventListener
     }
 
     //fills in the function of the cancel button

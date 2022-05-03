@@ -151,9 +151,9 @@ public class Home_Page extends AppCompatActivity implements View.OnClickListener
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
                 PendingPost pendingPost = snapshot.child("pp").getValue(PendingPost.class);
-                String temmp = pendingPost.getAcceptorID();
+                PendingPost pending = new PendingPost( pendingPost.getPostID(), pendingPost.getAcceptorID(), pendingPost.getPost_type() );
 
-                dbRef.child( temmp ).addValueEventListener(new ValueEventListener() {
+                dbRef.child( pending.getAcceptorID() ).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         User user2 = snapshot.getValue(User.class);

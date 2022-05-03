@@ -129,9 +129,11 @@ public class ConfirmationPageFragment extends Fragment implements View.OnClickLi
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     OfferData offer = snapshot.getValue(OfferData.class);
-                    //PendingPost pending;
 
-                    refUsers.child(offer.getPosterID()).child("pp").setValue( new PendingPost( postKey, uid, postType) )
+                    OfferData offerData = new OfferData( offer.getPosterID(), offer.getPosterName(), offer.getPosterGender(),
+                            offer.getPickupAddress(), offer.getDestinationAddress(), offer.getDateOfRide(), offer.getTravelType() );
+
+                    refUsers.child( offerData.getPosterID() ).child("pp").setValue( new PendingPost( postKey, uid, postType) )
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {

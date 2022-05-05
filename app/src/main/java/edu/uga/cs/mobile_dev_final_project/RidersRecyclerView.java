@@ -63,7 +63,7 @@ public class RidersRecyclerView  extends RecyclerView.Adapter<RidersRecyclerView
         holder.gender.setText(riderGenders[position]);
         int pos = holder.getAdapterPosition();
         position = holder.getAdapterPosition();
-        Log.d(TAG, "AHHHHHHHHHHHHHHHH: "+pos );
+        Log.d(TAG, "position: "+pos );
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

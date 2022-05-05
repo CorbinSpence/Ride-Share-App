@@ -65,7 +65,6 @@ public class ConfirmationPageFragment extends Fragment implements View.OnClickLi
         if (b != null) {
             postKey = getArguments().getString(POST_KEY);
             postType = getArguments().getInt(POST_TYPE);
-            Log.d(TAG, "HI: " + postKey);
         }
     }
 

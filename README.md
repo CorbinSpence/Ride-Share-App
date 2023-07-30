@@ -7,9 +7,7 @@ This is a prototype of a rideshare app that will allow users to connect with oth
 ## Table of Contents
 
 - [Installation](#installation)
-- [Usage](#usage)
 - [Credits](#credits)
-- [License](#license)
 
 ## Installation
 
